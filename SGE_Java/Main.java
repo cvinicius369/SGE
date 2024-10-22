@@ -65,7 +65,16 @@ class Estoque{
     }
 }
 public class Main {
+    public static void Banner(){
+        System.out.println("---------------------------------------------");
+        System.out.println("       S G E  - J A V A  V E R S I O N       ");
+        System.out.println("---------------------------------------------");
+    }
+    public static void Line(){
+        System.out.println("---------------------------------------------");
+    }
     public static void main(String[] args){
+        Banner();
         try (Scanner scan = new Scanner(System.in).useLocale(Locale.US);) {
             Estoque estoque = new Estoque();
             OUTER:
@@ -75,8 +84,9 @@ public class Main {
                 System.out.println("[5] - Entrada de Estoque | [6] - Saida de Estoque");
                 System.out.print("[7] - Alterar preço      | [8] - Sair \n-> ");
                 int decision = scan.nextInt();
+                Line();
                 switch (decision) {
-                    case 1 -> estoque.getRelacaoProdutos();
+                    case 1 -> { estoque.getRelacaoProdutos(); Line(); }
                     case 2 -> {
                         System.out.print("Codigo: ");
                         int codigo = scan.nextInt();
@@ -91,52 +101,48 @@ public class Main {
                         System.out.print("Preço por unidade: ");
                         String preco = scan.nextLine();
                         Produto prod = new Produto(codigo, name, unid, Integer.parseInt(qtd), Double.parseDouble(preco));
-                        estoque.addProduto(prod);
+                        Line(); estoque.addProduto(prod); Line();
                     }
                     case 3 -> {
                         System.out.print("Codigo do produto: ");
-                        int codigo = scan.nextInt();
-                        estoque.removeProduto(codigo);
+                        int codigo = scan.nextInt(); Line();
+                        estoque.removeProduto(codigo); Line();
                     }
                     case 4 -> {
                         System.out.print("Digite o codigo do produto: ");
                         scan.nextLine();
-                        String valor = scan.nextLine();
+                        String valor = scan.nextLine(); Line();
                         Produto pesquisa = estoque.SearchProductById(Integer.parseInt(valor));
                         if (pesquisa != null) {
                             System.out.println("Codigo: " + pesquisa.getCodigo() + "\nProduto: " + pesquisa.getProduto());
                             System.out.println("Tipo de Unidade: " + pesquisa.getUnidade() + "\nQuantidade: " + pesquisa.getQuantidade());
-                            System.out.println("Preço: " + pesquisa.getPreco());
+                            System.out.println("Preço: " + pesquisa.getPreco()); Line();
                         } 
-                        else { System.out.println("Produto não encontrado."); }
+                        else { System.out.println("Produto não encontrado."); Line(); }
                     }
                     case 5 -> {
                         System.out.print("Digite o codigo: ");
                         int codigo = scan.nextInt();
                         System.out.print("Quantidade de entrada: ");
                         int quantidade = scan.nextInt();
-                        estoque.EntradaEstoque(codigo, quantidade);
+                        Line(); estoque.EntradaEstoque(codigo, quantidade); Line();
                     }
                     case 6 ->                     {
                         System.out.print("Digite o codigo: ");
                         int codigo = scan.nextInt();
                         System.out.print("Quantidade de saida: ");
                         int quantidade = scan.nextInt();
-                        estoque.SaidaEstoque(codigo, quantidade);
+                        Line(); estoque.SaidaEstoque(codigo, quantidade); Line();
                     }
                     case 7 -> {
                         System.out.print("Digite o codigo: ");
                         int codigo = scan.nextInt();
                         System.out.print("Novo Preço: "); scan.nextLine();
                         double preco = scan.nextDouble();
-                        estoque.alteraPreco(codigo, preco);
+                        Line(); estoque.alteraPreco(codigo, preco); Line();
                     }
-                    case 8 -> {
-                        System.out.println("Até breve! ");
-                        break OUTER;
-                    }
-                    default -> {
-                    }
+                    case 8 -> { System.out.println("Até breve! "); Line(); break OUTER; }
+                    default -> { System.out.println("ERRO DE INPUT "); }
                 }
             }
         }
