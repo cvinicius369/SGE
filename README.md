@@ -1,6 +1,18 @@
 # SGE
 SGE - Sistema Gerenciador de Estoque: Software de gerenciamento de mercadorias de estoque
 
-Estou desenvolvendo esse software mais como passa tempo mesmo, pois para mim, programar vai além de trabalhar com softwares e sim mergulhar nesse mundo e desenvolver softwares como hobbies.
+Inicialmente esse projeto era apenas um hobby, mas agora será dividido em pastas de linguagens de programação onde alunos podem testar seu conhecimento criando SGEs na linguem que está estudando
 
-Conforme eu desenvolvo esse software eu vou documentando as novidades dele aqui
+Objetivo do projeto: desenvolver um sistema simples de gerenciamento de estoque que permite:
+    1. Entrada e saida de estoque
+    2. Cadastrar e remover produto
+    3. Listar produtos
+    4. Alterar preço
+
+Linguagens a serem usadas:
+    Java
+    C#
+    C/C++
+    Python
+    Fortran
+    ShellScript
