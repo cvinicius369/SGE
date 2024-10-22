@@ -66,12 +66,12 @@ class Estoque{
 }
 public class Main {
     public static void Banner(){
-        System.out.println("---------------------------------------------");
-        System.out.println("       S G E  - J A V A  V E R S I O N       ");
-        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------------");
+        System.out.println("          S G E  - J A V A  V E R S I O N          ");
+        System.out.println("---------------------------------------------------");
     }
     public static void Line(){
-        System.out.println("---------------------------------------------");
+        System.out.println("---------------------------------------------------");
     }
     public static void main(String[] args){
         Banner();
