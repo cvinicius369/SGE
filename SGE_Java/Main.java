@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 class Produto{
@@ -29,7 +30,7 @@ class Estoque{
     public void getRelacaoProdutos(){ 
         for (Produto prod : this.produtos){
             System.out.print("Codigo: " + prod.getCodigo() + " | Produto: " + prod.getProduto());
-            System.out.print(" | Tipo de Unidade: " + prod.getUnidade() + " | Quantidade: " + prod.getUnidade());
+            System.out.print(" | Tipo de Unidade: " + prod.getUnidade() + " | Quantidade: " + prod.getQuantidade());
             System.out.println(" | Preço: " + prod.getPreco());
         }
      }
@@ -55,7 +56,7 @@ class Estoque{
     /* [ SEARCH FOR PRODUCTS ] */
     // Os dois tipos de buscas mais comuns (nome e codigo de cadastro)
     public Produto SearchProductById(int codigo){ 
-        for (Produto prod : this.produtos){ if (prod.getProduto().equals(codigo)){ return prod; } }
+        for (Produto prod : this.produtos){ if (prod.getCodigo() == codigo){ return prod; } }
         return null;
     }
     public Produto SearchProductByName(String name){ 
@@ -65,7 +66,7 @@ class Estoque{
 }
 public class Main {
     public static void main(String[] args){
-        try (Scanner scan = new Scanner(System.in)) {
+        try (Scanner scan = new Scanner(System.in).useLocale(Locale.US);) {
             Estoque estoque = new Estoque();
             OUTER:
             while (true) {
@@ -99,11 +100,15 @@ public class Main {
                     }
                     case 4 -> {
                         System.out.print("Digite o codigo do produto: ");
+                        scan.nextLine();
                         String valor = scan.nextLine();
                         Produto pesquisa = estoque.SearchProductById(Integer.parseInt(valor));
-                        System.out.println("Codigo: " + pesquisa.getCodigo() + "\nProduto: " + pesquisa.getProduto());
-                        System.out.println("Tipo de Unidade: " + pesquisa.getUnidade() + "\nQuantidade: " + pesquisa.getUnidade());
-                        System.out.println("Preço: " + pesquisa.getPreco());
+                        if (pesquisa != null) {
+                            System.out.println("Codigo: " + pesquisa.getCodigo() + "\nProduto: " + pesquisa.getProduto());
+                            System.out.println("Tipo de Unidade: " + pesquisa.getUnidade() + "\nQuantidade: " + pesquisa.getQuantidade());
+                            System.out.println("Preço: " + pesquisa.getPreco());
+                        } 
+                        else { System.out.println("Produto não encontrado."); }
                     }
                     case 5 -> {
                         System.out.print("Digite o codigo: ");
@@ -122,7 +127,7 @@ public class Main {
                     case 7 -> {
                         System.out.print("Digite o codigo: ");
                         int codigo = scan.nextInt();
-                        System.out.print("Novo Preço: ");
+                        System.out.print("Novo Preço: "); scan.nextLine();
                         double preco = scan.nextDouble();
                         estoque.alteraPreco(codigo, preco);
                     }
