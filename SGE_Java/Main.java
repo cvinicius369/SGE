@@ -1,3 +1,5 @@
+import Configurations.BaseData;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
@@ -73,21 +75,31 @@ public class Main {
     public static void Line(){
         System.out.println("---------------------------------------------------");
     }
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         Banner();
+        BaseData database = new BaseData();
+        database.log("DEBUG : Incialização do Sistema", 200, "Em execução");
         try (Scanner scan = new Scanner(System.in).useLocale(Locale.US);) {
             Estoque estoque = new Estoque();
             OUTER:
             while (true) {
+                database.log("DEBUG : Abrindo menu do sistema", 200, "Em execução");
                 System.out.println("[1] - Listar Produtos    | [2] - Adicionar Produto");
                 System.out.println("[3] - Remover Produto    | [4] - Pesquisar Produto");
                 System.out.println("[5] - Entrada de Estoque | [6] - Saida de Estoque");
                 System.out.print("[7] - Alterar preço      | [8] - Sair \n-> ");
+                database.log("INFO : Aguardando Resposta . . .", 200, "Aguardando");
                 int decision = scan.nextInt();
+                database.log("INFO : Resposta do usuario: " + decision, 200, "Concluido");
                 Line();
                 switch (decision) {
-                    case 1 -> { estoque.getRelacaoProdutos(); Line(); }
+                    case 1 -> { 
+                        database.log("INFO : Geração Relação de Produtos", 200, "Em execução");
+                        estoque.getRelacaoProdutos(); Line(); 
+                        database.log("INFO : Geração Relação de Produtos", 200, "Concluido");
+                    }
                     case 2 -> {
+                        database.log("INFO : Coleta de Informações", 200, "Em execução");
                         System.out.print("Codigo: ");
                         int codigo = scan.nextInt();
                         scan.nextLine();
@@ -100,8 +112,11 @@ public class Main {
                         String qtd = scan.nextLine();
                         System.out.print("Preço por unidade: ");
                         String preco = scan.nextLine();
+                        database.log("INFO : Coleta de Informações", 200, "Concluido");
+                        database.log("DEBUG : Geração de Produto", 200, "Em execução");
                         Produto prod = new Produto(codigo, name, unid, Integer.parseInt(qtd), Double.parseDouble(preco));
                         Line(); estoque.addProduto(prod); Line();
+                        database.log("INFO : Geração de Produto", 200, "Concluido");
                     }
                     case 3 -> {
                         System.out.print("Codigo do produto: ");
@@ -141,10 +156,16 @@ public class Main {
                         double preco = scan.nextDouble();
                         Line(); estoque.alteraPreco(codigo, preco); Line();
                     }
-                    case 8 -> { System.out.println("Até breve! "); Line(); break OUTER; }
-                    default -> { System.out.println("ERRO DE INPUT "); }
+                    case 8 -> { 
+                        database.log("INFO : Abortar Sistema", 200, "Em execução");
+                        System.out.println("Até breve! "); Line(); break OUTER; 
+                    }
+                    default -> { 
+                        database.log("WARNING : Resposta não reconhecida", 200, "Erro");
+                        System.out.println("ERRO DE INPUT "); 
+                    }
                 }
             }
-        }
+        } 
     }
 }
