@@ -4,6 +4,21 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
+class User{
+    private int accessCode;
+    private int password;
+    private int hierarchy_level;
+    private String name;
+    private String function;
+    public int getAccess(){ return this.accessCode; }
+    public int getPass(){ return this.password; }
+    public int getHieracy(){ return this.hierarchy_level; }
+    public String getName(){ return this.name; }
+    public String getFunc(){ return this.function; }
+    public void setName(String newName) { this.name = newName; }
+    public void setFunction(String newFunction){ this.function = newFunction; }
+    public void setHierarchy(int newHl){ this.hierarchy_level = newHl; }
+}
 class Produto{
     private final String nome;
     private final String unidade;
@@ -25,46 +40,21 @@ class Produto{
     // Acho desnecessario o setter para o nome e unidade do produto ja que a ideia é que seja permanente
     public void setQuantidade(int newQuantidade){ this.quantidade = newQuantidade; }
     public void setPreco(double newPreco){ this.preco = newPreco; }
+    @Override
+    public String toString() { return nome + " - Quantidade: " + quantidade + ", Preço: " + preco; }
 }
 class Estoque{
     private final ArrayList<Produto> produtos = new ArrayList<>();
-    public void addProduto(Produto prod){ this.produtos.add(prod); }
-    public void getRelacaoProdutos(){ 
-        for (Produto prod : this.produtos){
-            System.out.print("Codigo: " + prod.getCodigo() + " | Produto: " + prod.getProduto());
-            System.out.print(" | Tipo de Unidade: " + prod.getUnidade() + " | Quantidade: " + prod.getQuantidade());
-            System.out.println(" | Preço: " + prod.getPreco());
-        }
-     }
-    public boolean removeProduto(int codigo){ 
-        for (Produto prod : this.produtos){ if(prod.getCodigo() == codigo){ produtos.remove(prod); } }
-        return false;
+    BaseData base = new BaseData();
+    public void addProduto(Produto prod){
+        base.adicionarProduto(prod.getCodigo(), prod.getProduto(), prod.getUnidade(), prod.getQuantidade(), prod.getPreco()); 
     }
-    public boolean EntradaEstoque(int codigo, int quantidade){ 
-        Produto produto = SearchProductById(codigo);
-        if(produto != null){ produto.setQuantidade(produto.getQuantidade() + quantidade); return true; }
-        return false;
-    }
-     public boolean SaidaEstoque(int codigo, int quantidade){ 
-        Produto produto = SearchProductById(codigo);
-        if(produto != null){ produto.setQuantidade(produto.getQuantidade() - quantidade); return true; }
-        return false;
-    }
-    public boolean alteraPreco(int codigo, double preco){
-        Produto produto = SearchProductById(codigo);
-        if(produto != null){ produto.setPreco(preco); return true; }
-        return false;
-     }
-    /* [ SEARCH FOR PRODUCTS ] */
-    // Os dois tipos de buscas mais comuns (nome e codigo de cadastro)
-    public Produto SearchProductById(int codigo){ 
-        for (Produto prod : this.produtos){ if (prod.getCodigo() == codigo){ return prod; } }
-        return null;
-    }
-    public Produto SearchProductByName(String name){ 
-        for (Produto prod : this.produtos){ if (prod.getProduto().equalsIgnoreCase(name)){ return prod; } }
-        return null;
-    }
+    public void getRelacaoProdutos(){ base.imprimirProdutos(); }
+    public void removeProduto(int codigo){ base.removerProduto(String.valueOf(codigo)); }
+    public void EntradaEstoque(int codigo, int quantidade){ base.darEntrada(String.valueOf(codigo), quantidade); }
+    public void SaidaEstoque(int codigo, int quantidade){ base.darBaixa(String.valueOf(codigo), quantidade); }
+    public void alteraPreco(int codigo, double npreco){ base.alterarPreco(codigo, npreco); }
+    public void SearchProductById(int codigo){ base.buscarProdutoPorCodigo(codigo); }
 }
 public class Main {
     public static void Banner(){
@@ -75,10 +65,8 @@ public class Main {
     public static void Line(){
         System.out.println("---------------------------------------------------");
     }
-    public static void main(String[] args) throws IOException {
-        Banner();
+    public static void menuUser(User user){
         BaseData database = new BaseData();
-        database.log("DEBUG : Incialização do Sistema", 200, "Em execução");
         try (Scanner scan = new Scanner(System.in).useLocale(Locale.US);) {
             Estoque estoque = new Estoque();
             OUTER:
@@ -113,48 +101,59 @@ public class Main {
                         System.out.print("Preço por unidade: ");
                         String preco = scan.nextLine();
                         database.log("INFO : Coleta de Informações", 200, "Concluido");
-                        database.log("DEBUG : Geração de Produto", 200, "Em execução");
+                        database.log("WARNING : Geração de Produto", 200, "Em execução");
                         Produto prod = new Produto(codigo, name, unid, Integer.parseInt(qtd), Double.parseDouble(preco));
                         Line(); estoque.addProduto(prod); Line();
-                        database.log("INFO : Geração de Produto", 200, "Concluido");
+                        database.log("WARNING : Geração de Produto", 200, "Concluido");
                     }
                     case 3 -> {
                         System.out.print("Codigo do produto: ");
+                        database.log("INFO : Aguardando Resposta . . .", 200, "Aguardando");
                         int codigo = scan.nextInt(); Line();
+                        database.log("WARNING : Remoção de produto . . .", 200, "Em execução");
                         estoque.removeProduto(codigo); Line();
+                        database.log("WARNING : Remoção de produto . . .", 200, "Concluido");
                     }
                     case 4 -> {
                         System.out.print("Digite o codigo do produto: ");
-                        scan.nextLine();
-                        String valor = scan.nextLine(); Line();
-                        Produto pesquisa = estoque.SearchProductById(Integer.parseInt(valor));
-                        if (pesquisa != null) {
-                            System.out.println("Codigo: " + pesquisa.getCodigo() + "\nProduto: " + pesquisa.getProduto());
-                            System.out.println("Tipo de Unidade: " + pesquisa.getUnidade() + "\nQuantidade: " + pesquisa.getQuantidade());
-                            System.out.println("Preço: " + pesquisa.getPreco()); Line();
-                        } 
-                        else { System.out.println("Produto não encontrado."); Line(); }
+                        database.log("INFO : Aguardando Resposta . . .", 200, "Aguardando");
+                        scan.nextLine(); String valor = scan.nextLine(); Line();
+                        database.log("INFO : Aguardando Resposta . . .", 200, "Concluido");
+                        database.log("INFO : Busca de Produto por ID", 200, "Em execução");
+                        estoque.SearchProductById(Integer.parseInt(valor)); 
+                        database.log("INFO : Busca de Produto por ID", 200, "Concluido");
                     }
                     case 5 -> {
+                        database.log("INFO : Aguardando Resposta . . .", 200, "Aguardando");
                         System.out.print("Digite o codigo: ");
                         int codigo = scan.nextInt();
+                        database.log("INFO : Aguardando Resposta . . .", 200, "Aguardando");
                         System.out.print("Quantidade de entrada: ");
                         int quantidade = scan.nextInt();
+                        database.log("INFO : Aguardando Resposta . . .", 200, "Concluido");
+                        database.log("WARNING : Entrada de Produto no Estoque", 200, "Em execução");
                         Line(); estoque.EntradaEstoque(codigo, quantidade); Line();
+                        database.log("WARNING : Entrada de Produto no Estoque", 200, "Concluido");
                     }
-                    case 6 ->                     {
+                    case 6 -> {
+                        database.log("INFO : Coleta de Dados", 200, "Em execução");
                         System.out.print("Digite o codigo: ");
                         int codigo = scan.nextInt();
                         System.out.print("Quantidade de saida: ");
                         int quantidade = scan.nextInt();
+                        database.log("INFO : Coleta de Dados", 200, "Concluido");
+                        database.log("WARNING : Saida de Produto no Estoque", 200, "Em execução");
                         Line(); estoque.SaidaEstoque(codigo, quantidade); Line();
+                        database.log("WARNING : Saida de Produto no Estoque", 200, "Concluido");
                     }
                     case 7 -> {
-                        System.out.print("Digite o codigo: ");
-                        int codigo = scan.nextInt();
-                        System.out.print("Novo Preço: "); scan.nextLine();
-                        double preco = scan.nextDouble();
+                        database.log("INFO : Coleta de Dados", 200, "Em execução");
+                        System.out.print("Digite o codigo: "); int codigo = scan.nextInt();
+                        System.out.print("Novo Preço: "); scan.nextLine(); double preco = scan.nextDouble();
+                        database.log("INFO : Coleta de Dados", 200, "Concluido");
+                        database.log("WARNING : Alteração de Preços", 200, "Em execução");
                         Line(); estoque.alteraPreco(codigo, preco); Line();
+                        database.log("WARNING : Alteração de Preços", 200, "Concluido");
                     }
                     case 8 -> { 
                         database.log("INFO : Abortar Sistema", 200, "Em execução");
@@ -166,6 +165,24 @@ public class Main {
                     }
                 }
             }
-        } 
+        }
+    }
+    public static void main(String[] args) throws IOException {
+        Scanner scan = new Scanner(System.in);
+        BaseData database = new BaseData();
+        User usuario = new User();
+        database.log("DEBUG : Incialização do Sistema", 200, "Em execução");
+        database.log("DEBUG : Abrir Banner", 200, "Em execução");
+        Banner();
+        database.log("DEBUG : Abrir Banner", 200, "Concluido");
+        database.log("INFO : Incialização do Sistema", 200, "Concluido"); 
+        
+        System.out.print("Insira seu codigo de acesso: ");
+        int accessCode = scan.nextInt();
+        if (accessCode == usuario.getAccess() || accessCode == 369){
+            System.out.print("Agora a senha: "); int pass = scan.nextInt();
+            if (pass == usuario.getPass() || pass == 369){ menuUser(usuario); }
+        }
+        else { System.out.println("Usuario invalido ou nao existente"); }
     }
 }

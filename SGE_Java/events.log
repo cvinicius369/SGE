@@ -1,0 +1,27 @@
+15-11-2024 21:20:34 - DEBUG : Incialização do Sistema - Em execução - 200
+15-11-2024 21:20:34 - DEBUG : Abrir Banner - Em execução - 200
+15-11-2024 21:20:34 - DEBUG : Abrir Banner - Concluido - 200
+15-11-2024 21:20:34 - INFO : Incialização do Sistema - Concluido - 200
+15-11-2024 21:20:46 - DEBUG : Abrindo menu do sistema - Em execução - 200
+15-11-2024 21:20:46 - INFO : Aguardando Resposta . . . - Aguardando - 200
+15-11-2024 21:20:50 - INFO : Resposta do usuario: 1 - Concluido - 200
+15-11-2024 21:20:50 - INFO : Geração Relação de Produtos - Em execução - 200
+15-11-2024 21:20:50 - INFO : Geração Relação de Produtos - Concluido - 200
+15-11-2024 21:20:50 - DEBUG : Abrindo menu do sistema - Em execução - 200
+15-11-2024 21:20:50 - INFO : Aguardando Resposta . . . - Aguardando - 200
+15-11-2024 21:20:59 - INFO : Resposta do usuario: 2 - Concluido - 200
+15-11-2024 21:20:59 - INFO : Coleta de Informações - Em execução - 200
+15-11-2024 21:21:18 - INFO : Coleta de Informações - Concluido - 200
+15-11-2024 21:21:18 - WARNING : Geração de Produto - Em execução - 200
+15-11-2024 21:21:18 - WARNING : Geração de Produto - Concluido - 200
+15-11-2024 21:21:18 - DEBUG : Abrindo menu do sistema - Em execução - 200
+15-11-2024 21:21:18 - INFO : Aguardando Resposta . . . - Aguardando - 200
+15-11-2024 21:21:34 - INFO : Resposta do usuario: 4 - Concluido - 200
+15-11-2024 21:21:34 - INFO : Aguardando Resposta . . . - Aguardando - 200
+15-11-2024 21:21:49 - INFO : Aguardando Resposta . . . - Concluido - 200
+15-11-2024 21:21:49 - INFO : Busca de Produto por ID - Em execução - 200
+15-11-2024 21:21:49 - INFO : Busca de Produto por ID - Concluido - 200
+15-11-2024 21:21:49 - DEBUG : Abrindo menu do sistema - Em execução - 200
+15-11-2024 21:21:49 - INFO : Aguardando Resposta . . . - Aguardando - 200
+15-11-2024 21:22:06 - INFO : Resposta do usuario: 8 - Concluido - 200
+15-11-2024 21:22:06 - INFO : Abortar Sistema - Em execução - 200
